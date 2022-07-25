@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-function issueToken(data: any, options: object) {
+function issueToken(data: object, options: object) {
     return jwt.sign(data, 'test', options)
 }
 
