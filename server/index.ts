@@ -1,18 +1,14 @@
-import express, { Express, Request, Response } from 'express';
-
+import express, { Express } from 'express';
+import router from "./src/routes";
+import cookieParser from 'cookie-parser'
+import * as dotenv from 'dotenv'
+dotenv.config()
 const app: Express = express();
 const port = process.env.PORT || 5000;
 
-app.get('/', (req: Request, res: Response) => {
-    res.send('Express + TypeScript Server')
-})
-
-app.post('/api/login', (req: Request, res: Response) => {
-    res.send({
-        accessToken: 'REFRESH_TOKEN_1',
-    })
-})
-
+app.use('/api', router);
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 app.listen(port, () => console.log(`App is listening on the http://localhost:5000`))
 

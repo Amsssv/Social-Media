@@ -1,0 +1,12 @@
+{
+  "preset": "ts-jest",
+  "testEnvironment": "node",
+  "verbose": true,
+  "automock": false,
+  "cache": false,
+  "roots": ["<rootDir>/__tests__/"],
+  "forceExit": true,
+  "clearMocks": true,
+  "resetMocks": true,
+  "restoreMocks": true
+}
