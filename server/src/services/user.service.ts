@@ -11,15 +11,16 @@ class UserService {
         // if(user) {
         //     throw new Error(`User with this ${email} already exist`);
         // }
-
+        //
         // let hashPassword = await bcrypt.hash(password, 3);
         let id = uuidv4()
         let payload = {
             id: id,
             email: email,
         }
+
         let tokens = tokenService.generateTokens(payload)
-        return{...tokens}
+        return{...tokens, ...payload}
     }
 
 }

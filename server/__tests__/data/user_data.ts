@@ -1,15 +1,15 @@
 interface User {
-    login: string,
+    email: string,
     password: string
 }
 
 export let users: Array<User> = [
     {
-        login: "vasya@mail.ru",
+        email: "vasya@mail.ru",
         password: "hello"
     },
     {
-        login: "lesha@mail.ru",
+        email: "lesha@mail.ru",
         password: "world",
     },
 ]
