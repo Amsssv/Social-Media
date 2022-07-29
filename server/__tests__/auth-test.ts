@@ -1,37 +1,32 @@
 import supertest from 'supertest';
 import app from '../index';
-// import issueToken from './fakeToken/issueToken';
-// import {tokens} from "./data/token_data";
-import {users} from "./data/user_data";
+import userService from "../src/services/user.service";
+
 
 describe('Authentication and Authorization form', () => {
 
     test('User can successfuly registrate', async () => {
-        // const users = [
-        //     {
-        //         email: "vasya@mail.ru",
-        //         password: "hello"
-        //     },
-        //     {
-        //         email: "lesha@mail.ru",
-        //         password: "world",
-        //     },
-        // ]
-            const {body, status} = await supertest(app)
+        const users = [
+            {email: "vasya@mail.ru", password: "hello"},
+            {email: "lesha@mail.ru", password: "world"},
+        ]
+        for (const user of users) {
+            const createUser = await userService.registration(user.email, user.password)
+            const {status, body} = await supertest(app)
                 .post('/api/registration')
-                .send(
-                );
+                .send(user);
             expect(status).toBe(200);
-            expect(body.email === 'vasya@mail.ru').toBe(true)
+            expect(createUser.email).toEqual(body.email);
+            expect(createUser.id).not.toBeNull();
+            expect(createUser.accessToken).not.toBeNull();
+            expect(createUser.refreshToken).not.toBeNull()
+        }
     })
 
     test('User can successfully login', async () => {
         const res = await supertest(app)
             .post('/api/login')
-            .send({
-                email: users[0].email,
-                password: users[0].password,
-            });
+            .send({});
         expect(res.status).toBe(200);
         expect(typeof res.body.accessToken === 'string').toBe(true)
         // expect(typeof res.header.cookie.refreshToken === 'string').toBe(true)
