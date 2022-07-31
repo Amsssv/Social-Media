@@ -9,13 +9,13 @@ class UserService {
     }
 
     async registration(email: string, password: string, name: string) {
-        let candidate: boolean = await userModel.userExist(email);
-        console.log(candidate)
+        const candidate: boolean = await userModel.userExist(email);
         if (candidate) {
             throw new Error(`User with this ${email} already exist`);
         }
-        let id = uuidv4();
-        let hashPassword = await bcrypt.hash(password, 3);
+
+        const id = uuidv4();
+        const hashPassword = await bcrypt.hash(password, 3);
         const isLogin: boolean = false;
         await userModel.addUser(id, email, hashPassword, name, isLogin);
     }
@@ -25,22 +25,19 @@ class UserService {
         if (!user) {
             throw new Error(`User not found`);
         }
+
         const userPassword: string = await userModel.getUserPassword(email);
         const isPasswordEquals = await bcrypt.compare(password, userPassword);
         if (!isPasswordEquals) {
             throw new Error('Invalid password');
         }
+
         await userModel.userGetAuthorized(email);
         const payload: object = await userModel.getUserData(email);
         const tokens = tokenService.generateTokens(payload);
 
         return {...tokens, ...payload};
     }
-
-    // async logout(refreshToken: string) {
-    //     const token = await tokenService.removeToken(refreshToken);
-    //     return token;
-    // }
 
     async refresh(refreshToken: string) {
         if (!refreshToken) {

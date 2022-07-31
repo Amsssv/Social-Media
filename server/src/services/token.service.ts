@@ -15,8 +15,7 @@ class TokenService {
 
     verifyAccessToken(token: string) {
         try {
-            let decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET as string);
-            return decoded;
+            return jwt.verify(token, process.env.JWT_ACCESS_SECRET as string);
         } catch (e) {
             return null;
         }

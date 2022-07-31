@@ -26,16 +26,15 @@ class UserController {
             res.cookie('refreshToken', userData.refreshToken, {maxAge: 2592000000, sameSite: true, httpOnly: true})
             return res.json(userData)
         } catch (e) {
+            res.status(403);
             next(e)
         }
     }
 
     async logout(req: Request, res: Response, next: NextFunction) {
         try {
-            // const {refreshToken} = req.cookies;
-            // await userService.logout(refreshToken);
             res.clearCookie('refreshToken');
-            return;
+            return res.status(200).redirect('/api/login');
         } catch (e) {
             next(e)
         }
