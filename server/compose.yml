@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:14.4-alpine3.16
+    environment:
+      POSTGRES_DB: "Messenger"
+      POSTGRES_USER: "localhost"
+      POSTGRES_HOST: "localhost"
+      POSTGRES_PASSWORD: "1222"
+      POSTGRES_PORT: "3010"
+    volumes:
+      - ../2. Init Database:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"

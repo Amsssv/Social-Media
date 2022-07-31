@@ -5,22 +5,20 @@ import userService from "../src/services/user.service";
 
 describe('Authentication and Authorization form', () => {
 
-    test('User can successfuly registrate', async () => {
+    test('User can successfully registrate', async () => {
         const users = [
-            {email: "vasya@mail.ru", password: "hello"},
-            {email: "lesha@mail.ru", password: "world"},
+            {email: "vasya@mail.ru", password: "hello", name: "Leisha"},
+            {email: "lesha@mail.ru", password: "world", name: "Vasyl"},
         ]
         for (const user of users) {
-            const createUser = await userService.registration(user.email, user.password)
+            await userService.registration(user.email, user.password, user.name);
             const {status, body} = await supertest(app)
                 .post('/api/registration')
                 .send(user);
             expect(status).toBe(200);
-            expect(createUser.email).toEqual(body.email);
-            expect(createUser.id).not.toBeNull();
-            expect(createUser.accessToken).not.toBeNull();
-            expect(createUser.refreshToken).not.toBeNull()
-        }
+            expect(body.email).toEqual(user.email);
+            expect(body.id).toBeDefined();
+       }
     })
 
     test('User can successfully login', async () => {
@@ -41,15 +39,15 @@ describe('Authentication and Authorization form', () => {
         // expect(typeof header.cookie.value === 'string').toBe(true);
     })
 
-    // test('User gets 403 on invalid credentials', async () => {
-    //     const res = await supertest(app)
-    //         .post('/api/login')
-    //         .send({
-    //             login: 'INVALID',
-    //             password: 'INVALID',
-    //         });
-    //     expect(res.status).toBe(403);
-    // })
+    test('User gets 403 on invalid credentials', async () => {
+        const res = await supertest(app)
+            .post('/api/login')
+            .send({
+                login: 'INVALID',
+                password: 'INVALID',
+            });
+        expect(res.status).toBe(403);
+    })
     //
     // test('User receives 401 on expired token', async () => {
     //     const expiredToken = issueToken(users[0], {expiresIn: '1000ms'});
