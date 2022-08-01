@@ -1,15 +1,22 @@
 import bcrypt from 'bcrypt'
-import tokenService from './token.service';
+import TokenService from './token.service';
 import {v4 as uuidv4} from 'uuid';
-import userModel from '../models/user.model';
-import {JwtPayload} from "jsonwebtoken";
+import UserModel from '../models/user.model';
+
+export interface TokenInterface {
+        id: string
+        email: string;
+        name: string;
+        userId: number;
+}
+
+const model = new UserModel();
+const token = new TokenService();
 
 class UserService {
-    constructor() {
-    }
 
     async registration(email: string, password: string, name: string) {
-        const candidate: boolean = await userModel.userExist(email);
+        const candidate: boolean = await model.userExist(email);
         if (candidate) {
             throw new Error(`User with this ${email} already exist`);
         }
@@ -17,24 +24,24 @@ class UserService {
         const id = uuidv4();
         const hashPassword = await bcrypt.hash(password, 3);
         const isLogin: boolean = false;
-        await userModel.addUser(id, email, hashPassword, name, isLogin);
+        await model.addUser(id, email, hashPassword, name, isLogin);
     }
 
     async login(email: string, password: string) {
-        const user: boolean = await userModel.userExist(email);
+        const user: boolean = await model.userExist(email);
         if (!user) {
             throw new Error(`User not found`);
         }
 
-        const userPassword: string = await userModel.getUserPassword(email);
+        const userPassword: string = await model.getUserPassword(email);
         const isPasswordEquals = await bcrypt.compare(password, userPassword);
         if (!isPasswordEquals) {
             throw new Error('Invalid password');
         }
 
-        await userModel.userGetAuthorized(email);
-        const payload: object = await userModel.getUserData(email);
-        const tokens = tokenService.generateTokens(payload);
+        await model.userGetAuthorized(email);
+        const payload: object = await model.getUserData(email);
+        const tokens = token.generateTokens(payload);
 
         return {...tokens, ...payload};
     }
@@ -43,16 +50,16 @@ class UserService {
         if (!refreshToken) {
             throw new Error('User unauthorized');
         }
-        const validRefreshToken: JwtPayload | string | null = tokenService.verifyRefreshToken(refreshToken);
+        const validRefreshToken = token.verifyRefreshToken(refreshToken) as TokenInterface;
         if (!validRefreshToken) {
             throw new Error('Invalid refreshToken');
         }
-        // @ts-ignore
-        const payload = await userModel.getUserData(validRefreshToken.email);
-        const tokens = tokenService.generateTokens(payload);
+
+        const payload = await model.getUserData(validRefreshToken.email);
+        const tokens = token.generateTokens(payload);
 
         return {...tokens, ...payload};
     }
 }
 
-export default new UserService()
+export default UserService;

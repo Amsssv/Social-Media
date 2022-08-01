@@ -1,8 +1,6 @@
 import jwt from 'jsonwebtoken'
 
 class TokenService {
-    constructor() {
-    }
 
     generateTokens(payload: object) {
         const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET as string, {expiresIn: 900000});
@@ -31,4 +29,4 @@ class TokenService {
 
 }
 
-export default new TokenService()
+export default TokenService;

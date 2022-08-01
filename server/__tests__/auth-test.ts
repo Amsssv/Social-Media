@@ -1,8 +1,6 @@
 import supertest from 'supertest';
 import app from '../index';
 import userService from "../src/services/user.service";
-import set = Reflect.set;
-
 
 describe('Authentication and Authorization form', () => {
 
@@ -44,10 +42,8 @@ describe('Authentication and Authorization form', () => {
     test('User can get new access token using refresh token', async () => {
         const res = await supertest(app)
             .post('/api/refresh')
-            .send({
-                refreshToken
-            });
-        expect(status).toBe(200);
+            .send();
+        expect(res.status).toBe(200);
     })
 
     test('User get 404 on invalid refresh token', async () => {
