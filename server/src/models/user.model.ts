@@ -13,9 +13,9 @@ class UserModel {
         })
     }
 
-    async addUser(id: string, email: string, password: string, name: string, isLogin: boolean) {
+    async addUser(id: string, email: string, password: string, name: string, isLogin: boolean = false) {
         let userData = `INSERT INTO users(id, email, password, name, isLogin) VALUES ($1, $2, $3, $4, $5) RETURNING *`;
-        return await this.pool.query(userData, [id, email, password, name, isLogin]);
+        await this.pool.query(userData, [id, email, password, name, isLogin]);
     }
 
     async userExist(email: string) {

@@ -1,6 +1,5 @@
 import supertest from 'supertest';
 import app from '../index';
-import userService from "../src/services/user.service";
 
 describe('Authentication and Authorization form', () => {
 
@@ -10,7 +9,6 @@ describe('Authentication and Authorization form', () => {
             {email: "lesha@mail.ru", password: "world", name: "Vasyl"},
         ]
         for (const user of users) {
-            await userService.registration(user.email, user.password, user.name);
             const {status, body} = await supertest(app)
                 .post('/api/registration')
                 .send(user);

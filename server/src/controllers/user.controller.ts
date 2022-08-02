@@ -1,37 +1,51 @@
 import {NextFunction, Request, Response} from "express";
-import UserService from '../services/user.service';
-import {validationResult} from 'express-validator';
+import {v4 as uuidv4} from "uuid";
+import bcrypt from "bcrypt";
+import UserModel from "../models/user.model";
+import jwt from "jsonwebtoken";
+import {validationResult} from "express-validator";
 
-const user = new UserService();
+const model = new UserModel();
 
 class UserController {
 
-    async registration(req: Request, res: Response, next: NextFunction) {
+    async signUp(req: Request, res: Response, next: NextFunction) {
         try {
             const errors = validationResult(req);
-            if(!errors.isEmpty()){
+            if (!errors.isEmpty()) {
+                res.status(403);
                 return next(new Error('Validation error'));
             }
             const {email, password, name} = req.body;
-            await user.registration(email, password, name);
+            const userId = uuidv4();
+            const hashPassword = await bcrypt.hash(password, 3);
+            await model.addUser(userId, email, hashPassword, name);
+            res.status(301).send("User successfully created");
         } catch (e) {
             next(e);
         }
     }
 
-    async login(req: Request, res: Response, next: NextFunction) {
+    async logIn(req: Request, res: Response, next: NextFunction) {
         try {
-            const {email, password} = req.body;
-            const userData = await user.login(email, password);
-            res.cookie('refreshToken', userData.refreshToken, {maxAge: 2592000000, sameSite: true, httpOnly: true});
-            return res.json(userData);
+            const {email} = req.body;
+            await model.userGetAuthorized(email);
+            const payload: object = await model.getUserData(email);
+            const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET as string, {expiresIn: 900000});
+            const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET as string, {expiresIn: "30d"});
+
+            res.cookie('refreshToken', refreshToken, {maxAge: 2592000000, sameSite: true, httpOnly: true});
+            return res.json({
+                accessToken,
+                refreshToken,
+                ...payload
+            });
         } catch (e) {
-            res.status(403);
             next(e);
         }
     }
 
-    async logout(req: Request, res: Response, next: NextFunction) {
+    async logOut(req: Request, res: Response, next: NextFunction) {
         try {
             res.clearCookie('refreshToken');
             return res.status(200).redirect('/api/login');
@@ -40,16 +54,21 @@ class UserController {
         }
     }
 
-    async refresh(req: Request, res: Response, next: NextFunction) {
-        try {
-            const {refreshToken} = req.cookies;
-            const userData = await user.refresh(refreshToken);
-            res.cookie('refreshToken', userData.refreshToken, {maxAge: 2592000000, sameSite: true, httpOnly: true})
-            return res.json(userData)
-        } catch (e) {
-            next(e)
-        }
-    }
+    // async refresh(req: Request, res: Response, next: NextFunction) {
+    //     try {
+    //         // const {refreshToken} = req.cookies;
+    //         //
+    //         // if (!refreshToken) {
+    //         //     new Error('User unauthorized');
+    //         // }
+    //         // const validRefreshToken = token.verifyRefreshToken(refreshToken) as payloadI;
+    //         // if (!validRefreshToken) {
+    //         //     new Error('Invalid refreshToken');
+    //         // }
+    //     } catch (e) {
+    //         next(e)
+    //     }
+    // }
 }
 
-export default  UserController;
+export default UserController;
