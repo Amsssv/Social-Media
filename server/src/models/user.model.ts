@@ -2,6 +2,7 @@ import {Pool} from 'pg';
 
 class UserModel {
     private pool: Pool;
+    private static _instance: UserModel;
 
     constructor() {
         this.pool = new Pool({
@@ -10,7 +11,11 @@ class UserModel {
             database: 'messenger',
             password: '1234',
             port: 3030,
-        })
+        });
+    }
+
+    static getInstance() {
+        return !this._instance? this._instance = new UserModel(): this._instance;
     }
 
     async addUser(id: string, email: string, password: string, name: string, isLogin: boolean = false) {
@@ -42,7 +47,8 @@ class UserModel {
             isLogin: islogin,
         }
     }
-
 }
 
-export default UserModel;
+const model = UserModel.getInstance();
+
+export default model;

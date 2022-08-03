@@ -1,21 +1,13 @@
 import {NextFunction, Request, Response} from "express";
 import {v4 as uuidv4} from "uuid";
 import bcrypt from "bcrypt";
-import UserModel from "../models/user.model";
+import model from "../models/user.model";
 import jwt from "jsonwebtoken";
-import {validationResult} from "express-validator";
-
-const model = new UserModel();
 
 class UserController {
 
     async signUp(req: Request, res: Response, next: NextFunction) {
         try {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                res.status(403);
-                return next(new Error('Validation error'));
-            }
             const {email, password, name} = req.body;
             const userId = uuidv4();
             const hashPassword = await bcrypt.hash(password, 3);

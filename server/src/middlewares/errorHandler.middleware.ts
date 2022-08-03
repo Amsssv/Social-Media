@@ -1,8 +1,7 @@
 import {NextFunction, Request, Response} from "express";
-import UserModel from "../models/user.model";
+import model from "../models/user.model";
 import bcrypt from "bcrypt";
-
-const model = new UserModel();
+import {isEmailValid, isPasswordValid} from "../utils/isCredentetialsValid";
 
 export async function errorHandler(req: Request, res: Response, next: NextFunction) {
     try {
@@ -10,6 +9,14 @@ export async function errorHandler(req: Request, res: Response, next: NextFuncti
         const candidate = await model.userExist(email);
 
         if (req.originalUrl === '/api/signup') {
+            if(!isEmailValid(email)) {
+                return next(new Error(`Wrong email try again`));
+            }
+
+            if(!isPasswordValid(password)) {
+                return next(new Error(`Your password too short or extends maximum characters`));
+            }
+
             if (candidate) {
                 res.status(403);
                 return next(new Error(`User with this email ${email} already exist`));
