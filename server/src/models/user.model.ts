@@ -1,44 +1,31 @@
-import {Pool} from 'pg';
+import db from './db';
 
 class UserModel {
-    private pool: Pool;
-    private static _instance: UserModel;
-
-    constructor() {
-        this.pool = new Pool({
-            user: 'postgres',
-            host: 'localhost',
-            database: 'messenger',
-            password: '1234',
-            port: 3030,
-        });
+    static async addUser(id: string, email: string, password: string, name: string, isLogin: boolean = false) {
+        try {
+            let userData = `INSERT INTO users(id, email, password, name, isLogin) VALUES ($1, $2, $3, $4, $5) RETURNING *`;
+            let result = await db.query(userData, [id, email, password, name, isLogin]);
+            return `User with this email ${result.rows[0].email} successfully created`;
+        } catch (e) {
+            throw new Error(`User with this email already exists`);
+        }
     }
 
-    static getInstance() {
-        return !this._instance? this._instance = new UserModel(): this._instance;
+    static async getUserPassword(email: string) {
+        try {
+            let user = await db.query(`SELECT password FROM users WHERE email = $1`, [email]);
+            return user.rows[0].password;
+        } catch (e) {
+            throw new Error(`User with this email does not exists`)
+        }
     }
 
-    async addUser(id: string, email: string, password: string, name: string, isLogin: boolean = false) {
-        let userData = `INSERT INTO users(id, email, password, name, isLogin) VALUES ($1, $2, $3, $4, $5) RETURNING *`;
-        await this.pool.query(userData, [id, email, password, name, isLogin]);
+    static async userGetAuthorized(email: string) {
+        await db.query(`UPDATE users SET isLogin = 'true' WHERE email = $1`, [email]);
     }
 
-    async userExist(email: string) {
-        let checkUser = await this.pool.query('SELECT EXISTS (SELECT FROM users WHERE email = $1)', [email]);
-        return checkUser.rows[0].exists;
-    }
-
-    async getUserPassword(email: string) {
-        let user = await this.pool.query(`SELECT password FROM users WHERE email = $1`, [email]);
-        return user.rows[0].password;
-    }
-
-    async userGetAuthorized(email: string) {
-        await this.pool.query(`UPDATE users SET isLogin = 'true' WHERE email = $1`, [email]);
-    }
-
-    async getUserData(email: string) {
-        let userData = await this.pool.query(`SELECT id, name, islogin FROM users WHERE email = $1`, [email]);
+    static async getUserData(email: string) {
+        let userData = await db.query(`SELECT id, name, islogin FROM users WHERE email = $1`, [email]);
         const {id, name, islogin} = userData.rows[0];
         return {
             id: id,
@@ -49,6 +36,4 @@ class UserModel {
     }
 }
 
-const model = UserModel.getInstance();
-
-export default model;
+export default UserModel;

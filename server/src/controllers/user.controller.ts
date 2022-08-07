@@ -11,8 +11,8 @@ class UserController {
             const {email, password, name} = req.body;
             const userId = uuidv4();
             const hashPassword = await bcrypt.hash(password, 3);
-            await model.addUser(userId, email, hashPassword, name);
-            res.status(301).send("User successfully created");
+            const userData = await model.addUser(userId, email, hashPassword, name);
+            res.send(userData);
         } catch (e) {
             next(e);
         }
@@ -22,7 +22,7 @@ class UserController {
         try {
             const {email} = req.body;
             await model.userGetAuthorized(email);
-            const payload: object = await model.getUserData(email);
+            const payload = await model.getUserData(email);
             const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET as string, {expiresIn: 900000});
             const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET as string, {expiresIn: "30d"});
 
