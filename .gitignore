@@ -9,7 +9,7 @@
 /client/package-lock.json
 package-lock.json
 node_modules
-
+/dist
 /.pnp
 .pnp.js
 

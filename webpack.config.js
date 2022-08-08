@@ -5,7 +5,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default {
     mode: 'development',
-    entry: './src/index.tsx',
+    entry: './client/src/index.tsx',
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js',
@@ -28,5 +28,5 @@ export default {
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
     },
-    plugins: [new HtmlWebpackPlugin({template: './public/index.html'})],
+    plugins: [new HtmlWebpackPlugin({template: './client/public/index.html'})],
 };

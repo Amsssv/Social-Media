@@ -1,7 +1,8 @@
+// @ts-ignore
 import supertest from 'supertest';
 import app from '../index';
 import db from '../src/models/db';
-jest.mock('../src/models/db');
+jest.mock('../server/src/models/db');
 
 describe('Authentication and Authorization form', () => {
 
