@@ -38,7 +38,6 @@ describe('Authentication and Authorization form', () => {
 
     test('User can successfully login', async () => {
         //@ts-ignore
-
         db.query = jest.fn(() => Promise.resolve(
             {rows: [{
                 id: "02866337-4fc2-4b9a-bfc5-b620f5ab4490",

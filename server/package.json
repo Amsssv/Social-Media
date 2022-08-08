@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --detectOpenHandles --no-cashe",
     "clearCache": "jest --clearCache",
-    "watch": "npx tsc --watch",
+    "watch": "nodemon -q ./dist/index.js",
     "start": "concurrently \"npx tsc --watch\" \"nodemon -q ./dist/index.js\""
   },
   "author": "",

@@ -1,0 +1,11 @@
+{
+  "name": "SocialMedia",
+  "version": "1.0.0",
+  "scripts": {
+    "install": "node nested-json.js",
+    "start": "concurrently --kill-others \"cd ./client && npm run watch\" \" cd ./server && npm run watch\""
+  },
+  "devDependencies": {
+    "concurrently": "^7.2.2"
+  }
+}
