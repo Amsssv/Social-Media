@@ -5,10 +5,10 @@
   "scripts": {
     "install": "node scripts/nested-json.js",
     "start": "concurrently --kill-others \" cd ./client && npm run watch\" \" cd ./server && npm run watch\"",
-    "clear_modules": "npm prune"
+    "clearModules": "npm prune"
   },
   "devDependencies": {
-    "concurrently": "^7.2.2"
-
+    "concurrently": "^7.2.2",
+    "prettier": "^2.7.1"
   }
 }

@@ -1,13 +1,14 @@
 import {dirname, resolve} from 'path';
 import HtmlWebpackPlugin from "html-webpack-plugin";
-import { fileURLToPath } from "url";
+import {fileURLToPath} from "url";
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default {
     mode: 'development',
     entry: './src/index.tsx',
     output: {
-        path: resolve(__dirname, 'dist'),
+        path: resolve(__dirname, '../dist'),
         filename: 'bundle.js',
     },
     module: {
@@ -40,7 +41,7 @@ export default {
                         loader: 'postcss-loader'
                     }
                 ]
-            }
+            },
         ]
     },
     resolve: {

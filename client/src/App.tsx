@@ -1,14 +1,13 @@
 import React from "react";
+import SignUpPage from "./pages/sign-up-page";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-      </header>
-        <body>
-        <h1 className="text-3xl font-bold underline"> Hello world</h1>
-        </body>
-    </div>
+    <>
+      <main className="px-4 py-16 sm:px-6 lg:px-8">
+        <SignUpPage />
+      </main>
+    </>
   );
 }
 
