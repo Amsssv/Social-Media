@@ -10,17 +10,21 @@ class UserController {
       const { name, email, password } = req.body;
       const userId = uuidv4();
       const hashPassword = await bcrypt.hash(password, 3);
-      const userData = await model.addUser(userId, email, hashPassword, name);
-      res.send(userData);
+      const result: any = await model.addUser(
+        userId,
+        email,
+        hashPassword,
+        name
+      );
+      res.send(result);
     } catch (e) {
-      next(e);
+      res.status(403).send("User with this email already exists");
     }
   }
 
   async logIn(req: Request, res: Response, next: NextFunction) {
     try {
       const { email } = req.body;
-      await model.userGetAuthorized(email);
       const payload = await model.getUserData(email);
       const accessToken = jwt.sign(
         payload,
@@ -44,7 +48,7 @@ class UserController {
         ...payload,
       });
     } catch (e) {
-      next(e);
+      res.status(403).send("User with this email doesn't exist");
     }
   }
 

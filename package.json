@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "install": "node scripts/nested-json.js",
-    "start": "concurrently --kill-others \" cd ./client && npm run watch\" \" cd ./server && npm run watch\"",
+    "start": "concurrently --kill-others \" cd ./client && npm run watch\" \" cd ./server && npm run start\"",
     "clearModules": "npm prune"
   },
   "devDependencies": {

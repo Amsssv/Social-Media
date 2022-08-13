@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import Logo from "../components/logo";
 import Container from "../components/container";
 import SignUpForm from "../components/sign-up-form";
+import Toastr from "../components/toastr/toastr";
 
 const SignUp = () => {
+  const [list, setList] = useState([]);
+  let toastProperties = null;
+
+  const handleClick = () => {
+    toastProperties = {
+      id: list.length + 1,
+    };
+    setList([...list, toastProperties]);
+  };
+
   return (
     <Container>
       <div className="border border-gray-100 rounded-lg shadow-lg flex items-center flex-col">
@@ -15,6 +26,8 @@ const SignUp = () => {
           Try new experience messaging with calibre
         </p>
         <SignUpForm />
+        <button onClick={handleClick}>Click me</button>
+        <Toastr list={list} setList={setList} />
       </div>
     </Container>
   );
