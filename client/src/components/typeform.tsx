@@ -6,7 +6,7 @@ const Typeform = () => {
     <div className="mb-2 self-start px-8">
       <CheckBox id="Terms">
         I agree to Typeform’s
-        <a href="#" className="underline">
+        <a href="#" className="underline mx-1">
           Terms of Service
         </a>
       </CheckBox>

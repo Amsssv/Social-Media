@@ -1,8 +1,7 @@
-import React, { FC, useReducer } from "react";
+import React, { FC, SyntheticEvent, useReducer } from "react";
 import TextField from "./text-field";
 import Typeform from "./typeform";
-import SubmitButton from "./submit-button";
-import sendSignUpData from "../api/sign-up-api";
+import { signUp } from "../api";
 
 enum Type {
   CHANGE_NAME = "CHANGE_NAME",
@@ -22,9 +21,9 @@ interface State {
 }
 
 const initialState = {
-  name: "",
-  email: "",
-  password: "",
+  name: "Alex",
+  email: "Amsssv@yandex.ru",
+  password: "1234",
 };
 
 function reducer(state: State, action: Action) {
@@ -56,13 +55,20 @@ const SignUpForm: FC = () => {
   const handleChange = (type: Type) => (payload: string) =>
     dispatch({ type, payload });
 
-  const handleClick = () => sendSignUpData(state);
+  const handleClick = (e: SyntheticEvent) => {
+    e.preventDefault();
+    signUp(state);
+  };
 
   return (
-    <form className="space-y-4 w-full my-2 flex flex-col mb-4">
+    <form
+      className="space-y-4 w-full my-2 flex flex-col mb-4"
+      onSubmit={handleClick}
+    >
       <TextField
         name="name"
         id="name"
+        type="text"
         placeholder="Name"
         value={state.name}
         onChange={handleChange(Type.CHANGE_NAME)}
@@ -70,6 +76,7 @@ const SignUpForm: FC = () => {
       <TextField
         name="email"
         id="email-address"
+        type="email"
         placeholder="Email"
         value={state.email}
         onChange={handleChange(Type.CHANGE_EMAIL)}
@@ -77,12 +84,17 @@ const SignUpForm: FC = () => {
       <TextField
         name="password"
         id="password"
+        type="password"
         placeholder="Password"
         value={state.password}
         onChange={handleChange(Type.CHANGE_PASSWORD)}
       />
       <Typeform />
-      <SubmitButton onClick={handleClick} name="Create account" />
+      <input
+        type="submit"
+        value="Create account"
+        className=" self-center w-1/2 transition duration-300 ease-in-out mx-6 bg-black px-16 py-4 text-white rounded-lg hover:shadow-md hover:shadow-gray-400 delay-300 "
+      />
     </form>
   );
 };
