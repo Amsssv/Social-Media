@@ -1,15 +1,6 @@
-
-
-/server/node_modules
-.idea/
-/server/dist
-/server/package-lock.json
-/client/node_modules
-/client/dist
-/client/package-lock.json
-package-lock.json
-node_modules
-/dist
+*package-lock.json
+*node_modules
+*dist
 /.pnp
 .pnp.js
 
