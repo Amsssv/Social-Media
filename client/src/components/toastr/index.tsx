@@ -1,6 +1,10 @@
 import React, { FC, useState, useContext } from "react";
 import ReactDOM from "react-dom";
-import { Transition, TransitionGroup } from "react-transition-group";
+import {
+  Transition,
+  TransitionGroup,
+  TransitionStatus,
+} from "react-transition-group";
 import ToastrItem from "./toastr-item";
 import { ToastrMessage, ToastrMessageType } from "./types";
 
@@ -20,12 +24,13 @@ const defaultStyle = {
   opacity: 0,
 };
 
-const transitionStyles = {
-  entering: { opacity: 1 },
-  entered: { opacity: 1 },
-  exiting: { opacity: 0 },
-  exited: { opacity: 0 },
-};
+const transitionStyles: Partial<Record<TransitionStatus, Record<string, any>>> =
+  {
+    entering: { opacity: 1 },
+    entered: { opacity: 1 },
+    exiting: { opacity: 0 },
+    exited: { opacity: 0 },
+  };
 
 const ToasrProvider: FC<Props> = ({ children }) => {
   const [messages, setMessages] = useState<ToastrMessage[]>([]);
