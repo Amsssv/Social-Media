@@ -1,18 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import Logo from "../components/logo";
 import Container from "../components/container";
 import SignUpForm from "../components/sign-up-form";
-import Toastr from "../components/toastr/toastr";
+import { useToastr } from "../components/toastr";
 
 const SignUp = () => {
-  const [list, setList] = useState([]);
-  let toastProperties = null;
-
+  const { notify } = useToastr();
   const handleClick = () => {
-    toastProperties = {
-      id: list.length + 1,
-    };
-    setList([...list, toastProperties]);
+    notify("сунь хуй в чай", "warning");
   };
 
   return (
@@ -27,7 +22,6 @@ const SignUp = () => {
         </p>
         <SignUpForm />
         <button onClick={handleClick}>Click me</button>
-        <Toastr list={list} setList={setList} />
       </div>
     </Container>
   );
