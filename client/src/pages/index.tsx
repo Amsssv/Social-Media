@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useRoutes } from "react-router-dom";
 import Login from "./login";
 import SignUp from "./sign-up";
@@ -7,6 +7,10 @@ import { useAuth } from "../components/auth";
 
 const Page = () => {
   const { user } = useAuth();
+
+  useEffect(() => {
+    //user check and path check if ok navigate
+  });
 
   return useRoutes([
     {

@@ -1,10 +1,8 @@
 import React, { FC, useContext, useEffect, useState } from "react";
 import { signIn } from "../../api/services";
-import { useToastr } from "../toastr";
 import { UserRequiredPayload } from "../../api/types";
-import { useLocation, useNavigate } from "react-router-dom";
 
-const NOOP = () => {};
+const NOOP = (error: Error = null) => {};
 
 const AuthContext = React.createContext(null);
 
@@ -13,16 +11,15 @@ interface Props {
 }
 
 export const AuthProvider: FC<Props> = ({ children }) => {
-  let location = useLocation();
-  let navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const { notify } = useToastr();
 
   useEffect(() => {
-    if (location.pathname !== "/" && !user) {
-      navigate("/");
-    }
+    //get state from cookies and set it to provider state
   }, []);
+
+  useEffect(() => {
+    //set user too cookies
+  }, [user]);
 
   const handleSignIt = async (
     payload: UserRequiredPayload,
@@ -31,27 +28,21 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     try {
       const user = await signIn(payload);
       setUser(user);
-      navigate(-1);
       callback();
     } catch (e) {
-      notify(e);
+      callback(e);
     }
   };
 
-  const handleSignOut = (callback = NOOP) => {
-    // signOut()
-  };
+  const handleSignOut = (callback = NOOP) => {};
 
   return (
     <AuthContext.Provider
       value={{ user, signIn: handleSignIt, signOut: handleSignOut }}
     >
-      {/*{!user && <Navigate to="/" state={{ from: location }} replace />}*/}
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);

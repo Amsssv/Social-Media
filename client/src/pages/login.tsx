@@ -4,6 +4,8 @@ import Container from "../components/container";
 import Logo from "../components/logo";
 import { UserPayload, UserRequiredPayload } from "../api/types";
 import { useAuth } from "../components/auth";
+import { useToastr } from "../components/toastr";
+import { useNavigate } from "react-router-dom";
 
 const SignInForm: FC<{ onSubmit: (data: UserRequiredPayload) => void }> = ({
   onSubmit,
@@ -45,8 +47,18 @@ const SignInForm: FC<{ onSubmit: (data: UserRequiredPayload) => void }> = ({
 
 const Login = () => {
   const { signIn } = useAuth();
+  const { notify } = useToastr();
+  const navigate = useNavigate();
+
   const handleSubmit = async (data: UserPayload) => {
-    signIn(data, () => {});
+    signIn(data, (error: Error) => {
+      if (error) {
+        notify(error.message);
+        return;
+      }
+
+      navigate(-1);
+    });
   };
 
   return (
