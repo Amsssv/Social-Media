@@ -1,4 +1,4 @@
-import { dirname, resolve } from "path";
+import path, { dirname, resolve } from "path";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import { fileURLToPath } from "url";
 
@@ -49,8 +49,12 @@ export default {
       },
     ],
   },
+
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
+    alias: {
+      "@calibre": path.resolve(__dirname, "src"),
+    },
   },
   plugins: [new HtmlWebpackPlugin({ template: "./public/index.html" })],
 };

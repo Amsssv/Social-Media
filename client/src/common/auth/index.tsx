@@ -1,6 +1,7 @@
 import React, { FC, useContext, useEffect, useState } from "react";
 import { signIn } from "../../api/services";
 import { UserRequiredPayload } from "../../api/types";
+import { getCookie, removeCookie, setCookie } from "../../utils";
 
 const NOOP = (error: Error = null) => {};
 
@@ -10,31 +11,36 @@ interface Props {
   children: React.ReactNode;
 }
 
+const COOKIE_NAME = "token";
+
 export const AuthProvider: FC<Props> = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    //get state from cookies and set it to provider state
+    const token = getCookie(COOKIE_NAME);
+    if (token) {
+      setUser(JSON.parse(token));
+    }
   }, []);
 
   useEffect(() => {
-    //set user too cookies
+    !user
+      ? removeCookie(COOKIE_NAME)
+      : setCookie(COOKIE_NAME, JSON.stringify(user));
   }, [user]);
 
-  const handleSignIt = async (
-    payload: UserRequiredPayload,
-    callback = NOOP
-  ) => {
+  const handleSignIt = async (payload: UserRequiredPayload, errorFn = NOOP) => {
     try {
       const user = await signIn(payload);
       setUser(user);
-      callback();
     } catch (e) {
-      callback(e);
+      errorFn(e);
     }
   };
 
-  const handleSignOut = (callback = NOOP) => {};
+  const handleSignOut = (errorFn = NOOP) => {
+    setUser(null);
+  };
 
   return (
     <AuthContext.Provider

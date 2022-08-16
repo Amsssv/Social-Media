@@ -1,7 +1,7 @@
 import React, { FC, SyntheticEvent, useState } from "react";
-import TextField from "./text-field";
-import Typeform from "./typeform";
-import { UserPayload } from "../api/types";
+import TextField from "@calibre/common/text-field";
+import Typeform from "@calibre/common/typeform";
+import { UserPayload } from "../../../api/types";
 
 const SignUpForm: FC<{ onSubmit: (data: UserPayload) => void }> = ({
   onSubmit,

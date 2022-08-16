@@ -1,11 +1,6 @@
 import React, { FC, SyntheticEvent, useState } from "react";
-import TextField from "../components/text-field";
-import Container from "../components/container";
-import Logo from "../components/logo";
-import { UserPayload, UserRequiredPayload } from "../api/types";
-import { useAuth } from "../components/auth";
-import { useToastr } from "../components/toastr";
-import { useNavigate } from "react-router-dom";
+import { UserRequiredPayload } from "@calibre/api/types";
+import TextField from "@calibre/common/text-field";
 
 const SignInForm: FC<{ onSubmit: (data: UserRequiredPayload) => void }> = ({
   onSubmit,
@@ -45,33 +40,4 @@ const SignInForm: FC<{ onSubmit: (data: UserRequiredPayload) => void }> = ({
   );
 };
 
-const Login = () => {
-  const { signIn } = useAuth();
-  const { notify } = useToastr();
-  const navigate = useNavigate();
-
-  const handleSubmit = async (data: UserPayload) => {
-    signIn(data, (error: Error) => {
-      if (error) {
-        notify(error.message);
-        return;
-      }
-
-      navigate(-1);
-    });
-  };
-
-  return (
-    <Container>
-      <div className="border border-gray-100 rounded-lg shadow-lg flex items-center flex-col">
-        <Logo />
-        <p className="uppercase text-xl text-slate-500 w-64 text-center mb-2">
-          Log in to Calibre
-        </p>
-        <SignInForm onSubmit={handleSubmit} />
-      </div>
-    </Container>
-  );
-};
-
-export default Login;
+export default SignInForm;

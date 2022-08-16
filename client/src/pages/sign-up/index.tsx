@@ -1,11 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Logo from "../components/logo";
-import Container from "../components/container";
-import SignUpForm from "../components/sign-up-form";
-import { signUp } from "../api/services";
-import { useToastr } from "../components/toastr";
-import { UserPayload } from "../api/types";
+
+import Logo from "@calibre/common/logo";
+import Container from "@calibre/common/container";
+import { signUp } from "@calibre/api/services";
+import { UserPayload } from "@calibre/api/types";
+import { useToastr } from "@calibre/common/toastr";
+
+import SignUpForm from "./components/sign-up-form";
 
 const SignUp = () => {
   let navigate = useNavigate();
@@ -19,6 +21,7 @@ const SignUp = () => {
       notify(e.message, "error");
     }
   };
+
   return (
     <Container>
       <div className="border border-gray-100 rounded-lg shadow-lg flex items-center flex-col">
