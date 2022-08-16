@@ -1,68 +1,20 @@
-import React, { FC, SyntheticEvent, useReducer } from "react";
+import React, { FC, SyntheticEvent, useState } from "react";
 import TextField from "./text-field";
 import Typeform from "./typeform";
-import { signUp } from "../api";
-import { useToastr } from "./toastr";
+import { UserPayload } from "../api/types";
 
-enum Type {
-  CHANGE_NAME = "CHANGE_NAME",
-  CHANGE_EMAIL = "CHANGE_EMAIL",
-  CHANGE_PASSWORD = "CHANGE_PASSWORD",
-}
+const SignUpForm: FC<{ onSubmit: (data: UserPayload) => void }> = ({
+  onSubmit,
+}) => {
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
 
-interface Action {
-  type: Type;
-  payload: string;
-}
-
-interface State {
-  name: string;
-  email: string;
-  password: string;
-}
-
-const initialState = {
-  name: "",
-  email: "",
-  password: "",
-};
-
-function reducer(state: State, action: Action) {
-  const { type, payload } = action;
-  switch (type) {
-    case Type.CHANGE_NAME:
-      return {
-        ...state,
-        name: payload,
-      };
-    case Type.CHANGE_EMAIL:
-      return {
-        ...state,
-        email: payload,
-      };
-    case Type.CHANGE_PASSWORD:
-      return {
-        ...state,
-        password: payload,
-      };
-    default:
-      return state;
-  }
-}
-
-const SignUpForm: FC = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const { notify } = useToastr();
-
-  const handleChange = (type: Type) => (payload: string) =>
-    dispatch({ type, payload });
-
-  const handleClick = (e: SyntheticEvent) => {
+  const handleClick = async (e: SyntheticEvent) => {
     e.preventDefault();
-    signUp(state)
-      .then(() => notify("You successfully signed up", "success"))
-      .catch((err) => notify(err, "error"));
+    onSubmit({ name, password, email });
   };
+
   return (
     <form
       className="space-y-4 w-full my-2 flex flex-col mb-4"
@@ -73,30 +25,30 @@ const SignUpForm: FC = () => {
         id="name"
         type="text"
         placeholder="Name"
-        value={state.name}
-        onChange={handleChange(Type.CHANGE_NAME)}
+        value={name}
+        onChange={setName}
       />
       <TextField
         name="email"
         id="email-address"
         type="email"
         placeholder="Email"
-        value={state.email.toLocaleLowerCase()}
-        onChange={handleChange(Type.CHANGE_EMAIL)}
+        value={email}
+        onChange={setEmail}
       />
       <TextField
         name="password"
         id="password"
         type="password"
         placeholder="Password"
-        value={state.password}
-        onChange={handleChange(Type.CHANGE_PASSWORD)}
+        value={password}
+        onChange={setPassword}
       />
       <Typeform />
       <input
         type="submit"
         value="Create account"
-        className="cursor-pointer self-center w-1/2 transition duration-300 ease-in-out mx-6 bg-black px-16 py-4 text-white rounded-lg hover:shadow-md hover:shadow-gray-400 delay-300 "
+        className=" self-center w-1/2 transition duration-300 ease-in-out mx-6 bg-black px-16 py-4 text-white rounded-lg hover:shadow-md hover:shadow-gray-400 delay-300 "
       />
     </form>
   );
