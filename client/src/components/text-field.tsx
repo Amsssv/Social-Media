@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 
 interface Props {
   id: string;
@@ -17,6 +17,7 @@ const TextField: FC<Props> = ({
   value,
   onChange,
 }) => {
+  const [valid, isValid] = useState(true);
   return (
     <div className="relative w-full px-8">
       <input
@@ -25,6 +26,7 @@ const TextField: FC<Props> = ({
         type={type}
         value={value}
         onChange={({ target: { value } }) => onChange(value)}
+        onBlur={() => isValid(false)}
         autoComplete="off"
         className="form-input block w-full p-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:border-gray-900 focus:z-10"
         placeholder={placeholder}
@@ -35,6 +37,17 @@ const TextField: FC<Props> = ({
       >
         {placeholder}
       </label>
+      {name === "name" && value.length < 5 && !valid && (
+        <p className="text-red-500 mx-2">Name is too short </p>
+      )}
+      {name === "email" && !value.includes("@") && !valid && (
+        <p className="text-red-500 mx-2">Incorrect Email</p>
+      )}
+      {name === "password" && value.length < 8 && !valid && (
+        <p className="text-red-500 mx-2">
+          Password should be at least 8 characters
+        </p>
+      )}
     </div>
   );
 };

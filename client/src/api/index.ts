@@ -1,5 +1,4 @@
 import axios from "axios";
-import { AxiosResponse } from "axios";
 
 export async function signUp(payload: object) {
   try {
@@ -7,17 +6,17 @@ export async function signUp(payload: object) {
       ...payload,
     });
   } catch (e) {
-    alert(e.response.data);
+    throw e.response.data;
   }
 }
 
 export async function logIn(payload: object) {
   try {
-    const result: AxiosResponse = await axios.post("api/login", {
+    let result = await axios.post("api/login", {
       ...payload,
     });
-    console.log(result);
+    localStorage.setItem("token", result.data.accessToken);
   } catch (e) {
-    console.log(e);
+    throw e.response.data;
   }
 }

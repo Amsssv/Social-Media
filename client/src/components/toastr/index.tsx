@@ -47,7 +47,7 @@ const ToasrProvider: FC<Props> = ({ children }) => {
   return (
     <>
       {ReactDOM.createPortal(
-        <div className="absolute space-y-3 top-12 right-7">
+        <div className="absolute top-12 right-7">
           <TransitionGroup>
             {messages.map((props) => (
               <Transition appear timeout={duration} key={props.id}>

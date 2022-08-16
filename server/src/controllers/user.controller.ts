@@ -37,7 +37,7 @@ class UserController {
         { expiresIn: "30d" }
       );
 
-      res.cookie("refreshToken", refreshToken, {
+      res.cookie("refreshToken", "Bearer " + refreshToken, {
         maxAge: 2592000000,
         sameSite: true,
         httpOnly: true,

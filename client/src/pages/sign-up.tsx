@@ -2,14 +2,8 @@ import React from "react";
 import Logo from "../components/logo";
 import Container from "../components/container";
 import SignUpForm from "../components/sign-up-form";
-import { useToastr } from "../components/toastr";
 
 const SignUp = () => {
-  const { notify } = useToastr();
-  const handleClick = () => {
-    notify("сунь хуй в чай", "warning");
-  };
-
   return (
     <Container>
       <div className="border border-gray-100 rounded-lg shadow-lg flex items-center flex-col">
@@ -21,7 +15,6 @@ const SignUp = () => {
           Try new experience messaging with calibre
         </p>
         <SignUpForm />
-        <button onClick={handleClick}>Click me</button>
       </div>
     </Container>
   );

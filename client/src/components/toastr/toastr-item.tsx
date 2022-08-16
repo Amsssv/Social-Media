@@ -28,7 +28,7 @@ const ToastrItem: FC<Props> = ({ id, message, type, onDelete }) => {
   return (
     <div
       className={cn(
-        "flex content-center justify-between w-72 h-16 border border-gray-200 rounded-lg shadow-lg opacity-75",
+        "flex content-center justify-between w-72 h-16 border my-2 border-gray-200 rounded-lg shadow-lg opacity-75",
         {
           "bg-red-500": type === "error",
           "bg-green-500": type === "success",
@@ -38,7 +38,9 @@ const ToastrItem: FC<Props> = ({ id, message, type, onDelete }) => {
       )}
     >
       <h1 className="mx-2 self-center">{message}</h1>
-      <button onClick={handleButtonClick}>X</button>
+      <button className="mx-3 my-1 self-start" onClick={handleButtonClick}>
+        X
+      </button>
     </div>
   );
 };
