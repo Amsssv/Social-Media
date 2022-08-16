@@ -24,15 +24,15 @@ class UserController {
 
   async logIn(req: Request, res: Response, next: NextFunction) {
     try {
-      const { email } = req.body;
-      const payload = await model.getUserData(email);
+      // const { email } = req.body;
+      // const payload = await model.getUserData(email);
       const accessToken = jwt.sign(
-        payload,
+        {},
         process.env.JWT_ACCESS_SECRET as string,
         { expiresIn: 900000 }
       );
       const refreshToken = jwt.sign(
-        payload,
+        {},
         process.env.JWT_REFRESH_SECRET as string,
         { expiresIn: "30d" }
       );
@@ -42,10 +42,10 @@ class UserController {
         sameSite: true,
         httpOnly: true,
       });
-      return res.json({
+      res.json({
         accessToken,
         refreshToken,
-        ...payload,
+        payload: {}, // ...payload,
       });
     } catch (e) {
       res.status(403).send("User with this email doesn't exist");
