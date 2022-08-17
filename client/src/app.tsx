@@ -2,7 +2,7 @@ import React from "react";
 import { ToasrProvider } from "./common/toastr";
 import { AuthProvider } from "./common/auth";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Login from "./pages/sign-in";
+import SignIn from "./pages/sign-in";
 import SignUp from "./pages/sign-up";
 import Success from "./pages/success";
 import PublicLayout from "./common/public-layout";
@@ -16,7 +16,7 @@ function App() {
           <AuthProvider>
             <Routes>
               <Route element={<PublicLayout />}>
-                <Route path="/" element={<Login />} />
+                <Route path="/" element={<SignIn />} />
                 <Route path="/registration" element={<SignUp />} />
               </Route>
               <Route element={<ProtectedLayout />}>

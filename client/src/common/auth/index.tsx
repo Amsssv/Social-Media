@@ -24,9 +24,11 @@ export const AuthProvider: FC<Props> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    !user
-      ? removeCookie(COOKIE_NAME)
-      : setCookie(COOKIE_NAME, JSON.stringify(user));
+    if (!user) {
+      removeCookie(COOKIE_NAME);
+    } else {
+      setCookie(COOKIE_NAME, JSON.stringify(user));
+    }
   }, [user]);
 
   const handleSignIt = async (payload: UserRequiredPayload, errorFn = NOOP) => {

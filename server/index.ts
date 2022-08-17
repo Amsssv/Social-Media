@@ -1,8 +1,9 @@
 import express, { Express } from "express";
+import * as path from "path";
 import router from "./src/routes";
 import cookieParser from "cookie-parser";
 import { config } from "dotenv";
-import * as path from "path";
+
 config();
 
 const app: Express = express();

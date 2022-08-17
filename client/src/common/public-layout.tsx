@@ -4,7 +4,7 @@ import { useAuth } from "./auth";
 
 const PublicLayout = () => {
   const { user } = useAuth();
-  return user ? <Navigate to={"/success"} replace /> : <Outlet />;
+  return user ? <Navigate to={"/success"} /> : <Outlet />;
 };
 
 export default PublicLayout;

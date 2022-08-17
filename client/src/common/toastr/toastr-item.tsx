@@ -9,6 +9,8 @@ interface Props {
   type: ToastrMessageType;
 }
 
+const DURATION = 3000;
+
 const ToastrItem: FC<Props> = ({ id, message, type, onDelete }) => {
   const [state, setState] = useState(null);
 
@@ -16,14 +18,14 @@ const ToastrItem: FC<Props> = ({ id, message, type, onDelete }) => {
     setState(
       setTimeout(() => {
         onDelete(id);
-      }, 3000)
+      }, DURATION)
     );
+    return () => {
+      clearInterval(state);
+    };
   }, []);
 
-  const handleButtonClick = () => {
-    onDelete(id);
-    clearInterval(state);
-  };
+  const handleButtonClick = () => onDelete(id);
 
   return (
     <div
