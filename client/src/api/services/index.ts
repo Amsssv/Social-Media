@@ -13,7 +13,9 @@ export async function signUp(payload: UserPayload) {
 
 export async function signIn(payload: UserRequiredPayload) {
   try {
-    const response: AxiosResponse = await axios.post("api/login", payload);
+    const response: AxiosResponse = await axios.post("api/login", payload, {
+      withCredentials: true,
+    });
     return response.data;
   } catch (e) {
     throw new Error(e);

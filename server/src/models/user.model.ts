@@ -1,9 +1,5 @@
 import db from "../db/pool";
-import {
-  insertUsersQuery,
-  selectFromUserQuery,
-  selectPasswordQuery,
-} from "../db/queries";
+import { insertUsersQuery, selectFromUserQuery } from "../db/queries";
 
 class UserModel {
   static async addUser(
@@ -20,23 +16,14 @@ class UserModel {
     }
   }
 
-  static async getUserPassword(email: string) {
+  static async getUserData(hash: string) {
     try {
-      let user = await db.query(selectPasswordQuery(email));
-      return user.rows[0].password;
-    } catch (e) {
-      return e;
-    }
-  }
-
-  static async getUserData(email: string) {
-    try {
-      let result = await db.query(selectFromUserQuery(email));
-      const { id, name } = result.rows[0];
+      let result = await db.query(selectFromUserQuery(hash));
+      const { id, name, password } = result.rows[0];
       return {
-        id: id,
-        email: email,
-        name: name,
+        id,
+        name,
+        password,
       };
     } catch (e) {
       throw e;

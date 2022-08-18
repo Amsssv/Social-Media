@@ -17,7 +17,7 @@ function App() {
             <Routes>
               <Route element={<PublicLayout />}>
                 <Route path="/" element={<SignIn />} />
-                <Route path="/registration" element={<SignUp />} />
+                <Route path="/signup" element={<SignUp />} />
               </Route>
               <Route element={<ProtectedLayout />}>
                 <Route path="/success" element={<Success />} />

@@ -1,8 +1,8 @@
 export type UserRequiredPayload = {
-  name: string;
+  email: string;
   password: string;
-}
+};
 
 export type UserPayload = UserRequiredPayload & {
-  email: string;
-}
+  name: string;
+};

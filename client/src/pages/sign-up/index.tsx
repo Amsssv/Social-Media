@@ -1,12 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
 import Logo from "@calibre/common/logo";
 import Container from "@calibre/common/container";
 import { signUp } from "@calibre/api/services";
 import { UserPayload } from "@calibre/api/types";
 import { useToastr } from "@calibre/common/toastr";
-
 import SignUpForm from "./components/sign-up-form";
 
 const SignUp = () => {
@@ -15,7 +13,7 @@ const SignUp = () => {
 
   const handleSubmit = async (data: UserPayload) => {
     try {
-      const response = await signUp(data);
+      await signUp(data);
       navigate("/");
     } catch (e) {
       notify(e.message, "error");

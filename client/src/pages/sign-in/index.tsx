@@ -5,6 +5,7 @@ import { UserPayload } from "@calibre/api/types";
 import { useAuth } from "@calibre/common/auth";
 import { useToastr } from "@calibre/common/toastr";
 import SignInForm from "./components/sign-in-form";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const { signIn } = useAuth();
@@ -22,6 +23,7 @@ const Login = () => {
           Log in to Calibre
         </p>
         <SignInForm onSubmit={handleSubmit} />
+        <Link to="/signup"> Don't have an account</Link>
       </div>
     </Container>
   );

@@ -1,7 +1,7 @@
-export const setCookie = (name: string, value: string) => {
-  document.cookie = `${name}=${encodeURIComponent(value)};`;
-};
-
+// export const setCookie = (name: string, value: string) => {
+//   document.cookie = `${name}=${encodeURIComponent(value)};`;
+// };
+//
 export const getCookie = (name: string) =>
   document.cookie
     .split(";")

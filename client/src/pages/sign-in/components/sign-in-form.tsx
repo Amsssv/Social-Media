@@ -5,23 +5,26 @@ import TextField from "@calibre/common/text-field";
 const SignInForm: FC<{ onSubmit: (data: UserRequiredPayload) => void }> = ({
   onSubmit,
 }) => {
-  const [name, setName] = useState("Asmmm");
-  const [password, setPassword] = useState("123123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleClick = async (e: SyntheticEvent) => {
     e.preventDefault();
-    onSubmit({ name, password });
+    onSubmit({ email, password });
   };
 
   return (
-    <form onSubmit={handleClick} className="space-y-4 w-full my-2">
+    <form
+      onSubmit={handleClick}
+      className="space-y-4 w-full my-2 flex flex-col mb-4"
+    >
       <TextField
-        name="name"
-        id="name"
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={setName}
+        name="email"
+        id="email-address"
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={setEmail}
       />
       <TextField
         name="password"

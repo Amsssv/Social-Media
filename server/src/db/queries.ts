@@ -10,4 +10,4 @@ export const selectPasswordQuery = (email: string) =>
   `SELECT password FROM users WHERE email = '${email}'`;
 
 export const selectFromUserQuery = (email: string) =>
-  `SELECT id, name FROM users WHERE email = '${email}'`;
+  `SELECT id, email, name, password FROM users WHERE email = '${email}'`;

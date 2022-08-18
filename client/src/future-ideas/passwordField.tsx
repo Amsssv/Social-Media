@@ -34,5 +34,4 @@ const PasswordField: FC<Props> = ({ value, onChange }) => {
     </div>
   );
 };
-
 export default PasswordField;
