@@ -37,7 +37,7 @@ const SignInForm: FC<{ onSubmit: (data: UserRequiredPayload) => void }> = ({
       <input
         type="submit"
         value="Sign in"
-        className=" self-center w-1/2 transition duration-300 ease-in-out mx-6 bg-black px-16 py-4 text-white rounded-lg hover:shadow-md hover:shadow-gray-400 delay-300 "
+        className=" cursor-pointer self-center w-1/2 transition duration-300 ease-in-out mx-6 bg-black px-16 py-4 text-white rounded-lg hover:shadow-md hover:shadow-gray-400 delay-300 "
       />
     </form>
   );
